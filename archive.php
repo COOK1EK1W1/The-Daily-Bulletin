@@ -54,9 +54,10 @@
 		<div style='float:right;right:0;position:absolute;'>
 			V3.1.1 ALPHA<br>Stable-ish
 		</div>
+        
+		<?php require("heading.php");?>
         <h2>Archive</h2>
-		<?php require("heading.php");
-		
+		<?php
         $archived_notices = get_archived();
 		
 		if (count($archived_notices) > 0){
