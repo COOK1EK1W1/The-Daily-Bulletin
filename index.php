@@ -98,7 +98,7 @@
 
 		<?php 
         require("html/version.html");
-        require("heading.php");
+        require("html/heading.php");
 		$needArchive = False;
 		
 		if ($_SESSION['loggedIn']){

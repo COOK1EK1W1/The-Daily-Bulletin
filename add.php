@@ -27,7 +27,7 @@ if ($notice == NULL){
         <script src="validate_notice.js"></script>
     </head>
     <body>
-    <?php require("heading.php")?>
+    <?php require("html/heading.php")?>
 
     <form method="POST" action="/" onsubmit="return validate_notice()" id="add_form">
 

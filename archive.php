@@ -55,7 +55,7 @@
 			V3.1.1 ALPHA<br>Stable-ish
 		</div>
         
-		<?php require("heading.php");?>
+		<?php require("html/heading.php");?>
         <h2>Archive</h2>
 		<?php
         $archived_notices = get_archived();
