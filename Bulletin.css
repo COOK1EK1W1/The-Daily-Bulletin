@@ -1,0 +1,198 @@
+body, label, input, textarea, p, td, th, h2, li, th, td, .extras_button{/*font of everything*/
+    font-family: Calibri, -apple-system;
+}
+
+@font-face {
+  font-family: heading_font;
+  src: url(font.ttf);
+}
+
+.Title, .Date{
+	font-family: 'heading_font';
+    width:100%; 
+    text-align:center;
+    margin-top: 10px;
+}
+
+.Title{
+    font-size:59px; 
+    margin-bottom:10px
+}
+.Date{
+    font-size:40px; 
+}
+
+ul{
+    list-style-type: none;
+	padding-left:2px;
+    width:12%; 
+	float:right;
+}
+
+[type="checkbox"], label{
+	cursor: pointer;
+}
+
+
+label {
+    display: inline-block;
+	padding-top:3px;
+    vertical-align: top;
+}
+
+#information{
+	width:49%;
+	float:left;
+}
+#displayDates{
+	width:49%;
+	float:right;
+}
+#viewer{
+	clear:both;
+}
+
+.tag_input{
+	width:20px;
+	height:20px;
+    vertical-align: middle;
+}
+
+#tags{
+		width:49%;
+	float:right;
+}
+
+table{
+	border-collapse:collapse; 
+	width:74%; 
+	margin-left:13%; 
+    margin-top:10px;
+    float:left;
+}
+
+th{
+	font-weight:bold; 
+    font-size:20px;
+}
+	
+td{
+    word-wrap: break-word;
+    font-size:20px;
+}
+
+#title{width:180px}
+#description{}
+#teacher{width:145px;}
+#action{width:130px;}
+#dates{width:120px;font-size:16px}
+
+
+#buttons{
+    width: 200px;
+    height:60px;
+    display:block;
+    min-width: 100px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.action_button{
+	width:60px;
+}
+
+.login_form{
+    position:apsolute;
+    height:0px;
+    margin:0px;
+}
+
+
+#add_form{
+    text-align: center;
+}
+	
+.action_form{
+	margin-bottom:0px; 
+	width:60px; 
+	display:inline;
+}
+
+
+.notices{
+	float:left;width:87%
+}
+
+@media only screen and (max-width: 900px) {
+	#title{width:140}
+	#description{}
+	#teacher{width:100;}
+	#action{width:65px;}
+	#dates{display:none}
+	
+    h1 {
+      padding-top:20px;
+    }
+    
+    table{
+        width:96%; 
+        margin-left:2%; 
+        margin-right:2%; 
+    }
+	li{display:none;}
+	.tagform{display:none;}
+	.notices{width:100%}
+
+}
+
+@media only screen and (max-width: 565px) {
+    #Date_Year {
+      display:None;
+    }
+}
+
+a:link, a:visited{
+    text-decoration: none;
+    color:blue;
+}
+
+a:hover, a:active{
+    text-decoration: underline;
+}
+
+#help{
+    width:40%
+}
+
+
+#help-heading{
+    text-align: center;
+    clear:both;
+}
+
+h2{
+	text-align:center;
+	margin-bottom:2px;
+	margin-top:2px;
+}
+
+textarea{
+	height:139px;
+	width:90%;
+}
+
+hr{
+	border:none;
+	height:1px;
+	background-color:darkgray;
+}
+
+body{
+	/*background-color:lavender;*/
+	
+	/*background-color:lemonchiffon;*/
+	
+	/*background-image: linear-gradient(lemonchiffon, khaki);*/
+	
+	/*background-image: linear-gradient(lightblue, khaki);*/
+}

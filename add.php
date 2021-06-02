@@ -1,0 +1,96 @@
+<?php session_start();
+if (!$_SESSION['loggedIn']){
+    echo "nah mate";
+    die();
+}
+require("connection.php");
+$notice = NULL;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if(isset($_POST['notice'])){
+        $notice = get_notice($_POST['notice']);
+    }
+}
+
+if ($notice == NULL){
+    $notice = array("NoticeID"=>"1", "Title"=> "", 
+    "Description"=> "", "Teacher"=> "","InitialDate"=> date("Y-m-d"),
+    "EndDate"=> date("Y-m-d"), "Repeata"=> "once", "tags"=>[]);
+}
+
+?>
+<html>
+    <head>
+        <title>DHS Daily Bulletin</title>
+        <link rel="stylesheet" href="Bulletin.css">
+        <meta charset="UTF-8">
+        <script src="update.js"></script>
+        <script src="validate_notice.js"></script>
+    </head>
+    <body>
+    <?php require("heading.php")?>
+
+    <form method="POST" action="/" onsubmit="return validate_notice()" id="add_form">
+
+        <div id='information'>
+            <h2>Information</h2>
+            <label for="Title">Enter Notice Title:</label><br>
+            <input name="Title" value='<?php echo $notice['Title']?>' required maxlength="30"/><br><br>
+
+            <label for='Description'>Enter Description: </label><br>
+            <textarea name='Description' required rows="4" cols="50" maxlength="20000"><?php echo $notice['Description']?></textarea><br><br>
+
+            <label for="Teacher">Enter Teacher:</label><br>
+            <input name="Teacher" value="<?php echo $notice['Teacher']?>" required maxlength="26" onchange="on_text_update()" /><br><br>
+        </div>
+        <hr width="1" size="300" style="float:left;height:300px;padding:auto;">
+        <div id='displayDates'>
+            <h2>Display Dates</h2>
+
+            <label for="start_date">Select start date:</label>
+            <input type="date" name="start_date" value="<?php echo $notice['InitialDate']?>" id="start_date" required onchange="on_date_update();" />
+            <br>
+            <container id="enddatecontainer">
+                <label for="end_date">Select end date:</label>
+                <input type="date" name="end_date" value="<?php echo $notice['EndDate']?>" id="end_date" required onchange="on_date_update();" />
+            </container><br>
+
+
+            <label for="repeat">Choose how often you want notices to be displayed:</label>
+
+            <select name="repeat" id="repeat" required onchange="on_date_update();">
+            
+            <option value="once" <?php if ($notice['Repeata'] == "once") echo "selected"?>>Once</option>
+
+            <option value="daily" <?php if ($notice['Repeata'] == "daily") echo "selected"?>>Daily</option>
+            
+            <option value="weekly" <?php if ($notice['Repeata'] == "weekly") echo "selected"?>>Weekly</option>
+
+            </select><br></div>
+            
+            <div id='tags'>
+            <br>
+            <h2>Tags</h2>
+            <textarea name="tags"><?php echo implode(", ", $notice['tags'])?></textarea>
+            </div>
+            <?php
+if (isset($_POST['notice'])){
+    echo "<input name='Remove' value=".$_POST['notice']." style='display:none;'>";
+}
+echo "<br><div id='viewer'><hr><h2>Viewer</h2>";
+echo "<table border=2><tr><th id='title'>Title</th>
+<th id='description'>Description</th>
+<th id='teacher'>Teacher</th></tr>";
+
+echo "<tr><td id='title'></th>
+<td id='description'></th>
+<td id='teacher'></th></tr></table>";
+?>
+<br><label id='date_text'></label></div><br><br>
+<input type="submit" name="page_action" value="Add" id="buttons" />
+</form>
+</body>
+<script>
+    on_date_update();
+    setInterval(on_text_update, 1);
+</script>
+</html>
