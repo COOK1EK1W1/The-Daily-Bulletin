@@ -35,21 +35,18 @@
 
 
             case 'Add':
-                if (isset($_POST['tags'])){
-                    $tags = explode(", ", $_POST['tags']);
-                    $clean_tags = array();
-                    for ($i = 0; $i < count($tags);$i++){
-                        if ($tags[$i] != ""){
-                            array_push($clean_tags, $tags[$i]);
-                        }
+                $tags = explode(", ", $_POST['tags']); //parse tags
+                $clean_tags = array(); 
+                foreach ($tags as $tag){
+                    if ($tag != ""){
+                        array_push($clean_tags, $tag);
                     }
-                }else{
-                    $clean_tags = array("No Tags");
                 }
-                if ($clean_tags == array()){
+                unset($tag);
+                if ($clean_tags == array()){ //if there are no tags add "No Tags" to tags
                     $clean_tags = array("No Tags");
-                }
-                add_notice($_POST['Title'],
+                } //call add_notice() from connection.php
+                add_notice($_POST['Title'], 
                 $_POST['Description'],
                 $_POST['Teacher'],
                 $_POST['start_date'],
@@ -58,8 +55,8 @@
                 $clean_tags);
                 break;
 
-            case "Archive":
-                archive_notice($_POST['notice']);
+            case "Archive": //add notice to archive then delete from current
+                archive_notice($_POST['notice']); //both function from connection.php
                 remove_notice($_POST['notice']);
 
 
@@ -68,7 +65,7 @@
                 break;
 
 
-            case "Archive_old":
+            case "Archive_old": //remove notices that are past the end date
                 archive_old();
                 break;
             
@@ -85,108 +82,109 @@
 	</head>
 	<body>
 		
-		<?php
-        echo '<form method="POST" class="login_form">';
-		if ($_SESSION['loggedIn']){
-			echo '<input type="submit" name="page_action" value="Logout">';
-		}else{
-			echo '<input type="password" name="password">
-			      <input type="submit" name="page_action" value="Login">';
-		}
-        echo '</form>'?>
+		<?php //add login / logout form
+            echo '<form method="POST" class="login_form">';
+            if ($_SESSION['loggedIn']){
+                echo '<input type="submit" name="page_action" value="Logout">';
+            }else{
+                echo '<input type="password" name="password">
+                    <input type="submit" name="page_action" value="Login">';
+            }
+            echo '</form>';
 
+             
+            require("html/version.html"); //add bulletin verion
+            require("html/heading.php"); //add the heading
+            $needArchive = False; //create needArchive for archiving old notices
+            
+            if ($_SESSION['loggedIn']){
+                require("html/add_button.html"); //add notice button
+                $notices = get_all_notices(); //if logged in call get_all_notices() from connection.php
+            
+                foreach($notices as $notice){//loop for each notice and see if it is past end date
+                    if ($notice['Display'] == 3){
+                        $needArchive = True;
+                    }
+                }
+                unset($notice);
+            }else{
+                $notices = get_today_notices(); //if not logged in call get_today_notices() from connection.php
+            }
+            
+            if (count($notices) > 0){ //if there are notices
+                echo "<table border='2'><tr>"; //open table
+                echo "<th id='title'>Title</th>
+                    <th id='description'>Description</th>
+                    <th id='teacher'>Teacher</th>";//add the titles of the columns
 
-		<?php 
-        require("html/version.html");
-        require("html/heading.php");
-		$needArchive = False;
-		
-		if ($_SESSION['loggedIn']){
-			require("html/add_button.html");
-			$notices = get_all_notices();
-		
-			for($i = 0;$i<count($notices);$i++){
-				if ($notices[$i]['Display'] == 3){
-					$needArchive = True;
-				}
-			}
-		}else{
-			$notices = get_today_notices();
-		}
-		
-		if (count($notices) > 0){
-			echo "<table border='2'><tbody><tr>";
-			echo "<th id='title'>Title</th>
-                  <th id='description'>Description</th>
-                  <th id='teacher'>Teacher</th>";
-			if ($_SESSION['loggedIn']){
-				echo "<th id='dates'>Display Dates</th>
-                      <th id='action'>Action</th>";
-			}
-			echo "</tr>";
-			foreach($notices as $row){
-                //for each docs https://www.php.net/manual/en/control-structures.foreach.php
-                //its a bit stupid but oh well
-				echo "<tr>";
-				echo '<td id="title">'.htmlify($row['Title']);
-				echo "<div style='display: none;'>".implode(",",$row['tags'])."</div></td>";
-				echo '<td id="description">'.htmlify($row['Description']);
-				echo '<td id="teacher">'.htmlify($row['Teacher']);
-				if ($_SESSION['loggedIn']){
-					$date_colours = array("green", "purple", "black", "red");
-					echo "<td id='dates' style='color:".$date_colours[$row['Display']]."'>";
-					echo format_shown_dates($row["InitialDate"], $row["EndDate"], $row["Repeata"])."</td>";
-					
-					echo '<td id="action">
-                        <form method="POST" action="add.php" class="action_form">
-                            <input name="notice" value='.$row['NoticeID'].' style="display:None;">
-                            <input type="submit" name="page_action" value="Edit" class="action_button">
-                        </form>
+                if ($_SESSION['loggedIn']){ //add the extra column headers if loggedin
+                    echo "<th id='dates'>Display Dates</th>
+                        <th id='action'>Action</th>";
+                }
+                echo "</tr>";
+
+                foreach($notices as $row){//for each notice
+                    echo "<tr>";
+                    echo '<td id="title">'.htmlify($row['Title']); //add all the information for the notices
+                    echo "<div style='display: none;'>".implode(",",$row['tags'])."</div></td>";
+                    echo '<td id="description">'.htmlify($row['Description'])."</td>";
+                    echo '<td id="teacher">'.htmlify($row['Teacher'])."</td>";
+
+                    if ($_SESSION['loggedIn']){ //if logged in add the display dates
+                        $date_colours = array("green", "purple", "black", "red");
+                        echo "<td id='dates' style='color:".$date_colours[$row['Display']]."'>";
+                        echo format_shown_dates($row["InitialDate"], $row["EndDate"], $row["Repeata"])."</td>";
                         
-                        <form method="POST" action="/" class="action_form" onsubmit="return confirm(\'Are you sure you want to remove this notice\')">
-                            <input name="notice" value='.$row["NoticeID"].' style="display:None;">
-                            <input type="submit" name="page_action" value="Remove" class="action_button">
-                        </form>
+                        // if loggedin add the notice actions
+                        echo '<td id="action">
+                                <form method="POST" action="add.php" class="action_form">
+                                    <input name="notice" value='.$row['NoticeID'].' style="display:None;">
+                                    <input type="submit" name="page_action" value="Edit" class="action_button">
+                                </form>
+                                
+                                <form method="POST" action="/" class="action_form" onsubmit="return confirm(\'Are you sure you want to remove this notice\')">
+                                    <input name="notice" value='.$row["NoticeID"].' style="display:None;">
+                                    <input type="submit" name="page_action" value="Remove" class="action_button">
+                                </form>
 
-                        <form method="POST" action="/" class="action_form">
-                            <input name="notice" value='.$row['NoticeID'].' style="display:None;">
-                            <input type="submit" name="page_action" value="ODH" class="action_button">
-                        </form>
+                                <form method="POST" action="/" class="action_form">
+                                    <input name="notice" value='.$row['NoticeID'].' style="display:None;">
+                                    <input type="submit" name="page_action" value="ODH" class="action_button">
+                                </form>
 
-                        <form method="POST" action="/" class="action_form">
-                            <input name="notice" value='.$row['NoticeID'].' style="display:None;">
-                            <input type="submit" name="page_action" value="Archive" class="action_button">
-                        </form>
+                                <form method="POST" action="/" class="action_form">
+                                    <input name="notice" value='.$row['NoticeID'].' style="display:None;">
+                                    <input type="submit" name="page_action" value="Archive" class="action_button">
+                                </form>
+                             </td>';
 
-                    </td>';
-
-				}
-				echo "</tr>";
-			}
-            unset($row);//for each being stupid
-
-			echo "</tbody></table>";
-			
-			$tags = get_tags($notices);
-			echo "<ul>";
-			foreach($tags as $tag){
-				echo "<li><label style='width:100%'><input class='tag_input' name='".$tag."'  type='checkbox' onchange='update()' />".$tag."</label></li>";
-			}
-            unset($tag);
-			echo "</ul>";
-			
-		}else{
-			echo "<h2>No notices today</h2>";
-		}
-		echo "<h2 style='clear:both;'>Can't find what your looking for?<br>Try looking in the <a href='/archive.php'>Archive</a></h2>";
-		
-		if ($needArchive){
-			echo '<form method="POST" action="/" class="action_form" style="display:none" id="archive_old"><input name="page_action" value="Archive_old" class="action_button"></form>';
-			echo '<script src="archive_old.js"></script>';
-		}?>
-    <script src="tag_update.js"></script>
+                    }
+                    echo "</tr>";//close the row
+                }
+                unset($row);
+                echo "</table>"; //close the table
+                
+                $tags = get_tags($notices);//get the tags for all displayed notices
+                echo "<ul>";
+                foreach($tags as $tag){ //create list of all tags
+                    echo "<li><label style='width:100%'><input class='tag_input' name='".$tag."'  type='checkbox' onchange='update()' />".$tag."</label></li>";
+                }
+                unset($tag);
+                echo "</ul>";
+                
+            }else{ //no notices
+                echo "<h2>No notices today</h2>";
+            }
+            echo "<h2 style='clear:both;'>Can't find what your looking for?<br>Try looking in the <a href='/archive.php'>Archive</a></h2>";
+            
+            if ($needArchive){
+                echo '<form method="POST" action="/" class="action_form" style="display:none" id="archive_old"><input name="page_action" value="Archive_old" class="action_button"></form>';
+                echo '<script src="archive_old.js"></script>';
+            }
+        ?>
+        <script src="tag_update.js"></script>
 	</body>
-	<script>
+	<script>//script to remove page history
 		if ( window.history.replaceState ) {window.history.replaceState( null, null, window.location.href );}
 	</script>
 </html>
