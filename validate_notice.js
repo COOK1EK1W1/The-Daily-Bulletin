@@ -2,28 +2,31 @@
 
 function validate_notice() {
 
-    let x = document.getElementsByName("start_date")[0].value;
-    let y = document.getElementsByName("end_date")[0].value;
-    let z = document.getElementById("repeat").value
-    if (y == "") {
-        document.getElementsByName("end_date")[0].value = x;
-    }
-    y = document.getElementsByName("end_date")[0].value;
+    let start = new Date(document.getElementsByName("start_date")[0].value); //get start date
+    let finish = document.getElementsByName("end_date")[0].value;
+    let repeata = document.getElementById("repeat").value; //get repeat type
 
-    if (x > y && z != "once") {//check dates are not in the past
+
+    if (finish == "") {
+        finish = start;//if end date is blank set y to 
+    } else {
+        finish = new Date(finish); //convert string to date
+    }
+
+    if (start > finish) {//check if end before start
         alert("Looks like your start date is after your end date!");
         return false;
     }
 
-    if (new Date(y) < new Date().setDate(date.getDate() + 1)) {
-        alert("Looks like you end date is in the past!")
+    if (start.getTime() < new Date().getTime() - 86400000 && repeata == "once") {//check dates are not in the past
+        alert("Your trying to set a notice that has passed");
         return false;
     }
 
-    if (!confirm("Do you wish to add notice to the bulletin")) {
+    if (finish.getTime() < new Date().getTime() - 86400000) {//check end is not in past
+        alert("Looks like you end date is in the past!");
         return false;
-
-    } else { //notice is good
-        return true;
     }
+
+    return confirm("Do you wish to add notice to the bulletin");//final check
 }
