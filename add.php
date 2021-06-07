@@ -5,6 +5,7 @@
         die();
     }
     require("connection.php");
+    require("UsefulFunctions.php");
 
     $notice = NULL; //set notice to POST notice for editing
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -72,7 +73,17 @@
             <div id='tags'>
                 <br>
                 <h2>Tags</h2>
-                <textarea name="tags"><?php echo implode(", ", $notice['tags'])?></textarea>
+                <textarea name="tags" style="width:70%" placeholder="Tag1, Tag2, Tag3"><?php echo implode(", ", $notice['tags'])?></textarea>
+                <ul style="text-align:left; width:20%">
+                    <?php
+                        $notices = get_current();
+                        $tags = get_tags($notices);
+                        foreach($tags as $tag){
+                            echo "<input type='button' value='".$tag."' onclick='add_to_tags(\"".$tag."\")'>";
+                        }
+                        unset($tag);
+                    ?>
+                </lu>
             </div>
             <?php
                 if (isset($_POST['notice'])){
@@ -95,6 +106,8 @@
                         <td id='teacher'></th>
                     </tr>
                 </table>
+                <ul  style="text-align:left;">
+                </ul>
 
                 <br><label id='date_text'></label>
             </div>
@@ -104,6 +117,6 @@
     </body>
     <script>
         on_date_update();
-        setInterval(on_text_update, 1);
+        setInterval(on_text_update, 30);
     </script>
 </html>

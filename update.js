@@ -7,12 +7,25 @@ function on_text_update() {
     let title = document.getElementsByName("Title")[0].value;
     let description = document.getElementsByName("Description")[0].value;
     let teacher = document.getElementsByName("Teacher")[0].value;
+    let tags = document.getElementsByName("tags")[0].value.split(", ");
+
     if ((title == "" && description == "" && teacher == "")) {
         title = "⠀"
     }
     document.getElementsByTagName("td")["title"].innerHTML = htmlify(title);
     document.getElementsByTagName("td")["description"].innerHTML = htmlify(description);
     document.getElementsByTagName("td")["teacher"].innerHTML = htmlify(teacher);
+
+    var tag_list = "";
+    if (tags[0] == "") {
+
+        tag_list = "<li><label style='width:100%'><input class='tag_input' name='No Tags'  type='checkbox'/>No Tags</label></li>"
+    } else {
+        for (var i = 0; i < tags.length; i++) {
+            tag_list += "<li><label style='width:100%'><input class='tag_input' name='" + tags[i] + "' type='checkbox'/>" + tags[i] + "</label></li>";
+        }
+    }
+    document.getElementsByTagName("ul")[1].innerHTML = tag_list;
 }
 
 
@@ -44,10 +57,10 @@ function on_date_update() {
     }
 }
 
-function htmlify(string) {//convert raw text to html]
-    string = string.replaceAll("\n", "<br>")
+function htmlify(string) {//convert raw text to html
+    string = string.replaceAll("\n", "<br>")//new line fix
 
-    parts = string.split("*");
+    parts = string.split("*"); //stars for bold
     bold = false;
     string = "";
     for (var i = 0; i < parts.length; i++) {
@@ -58,10 +71,27 @@ function htmlify(string) {//convert raw text to html]
             } else {
                 string += "<b>"
             }
-
         }
         bold = !bold
-
     }
     return string
+}
+
+function add_to_tags(tag) {
+    tags = document.getElementsByName("tags")[0].value.split(", ");
+    if (tags.includes(tag)) {//remove tag
+        for (var i = 0; i < tags.length; i++) {
+            if (tags[i] == tag) {
+                tags.splice(i, 1);
+            }
+        }
+    } else {//add tag
+        tags.push(tag)
+    }
+    for (var i = 0; i < tags.length; i++) {//remove empty tags
+        if (tags[i] == "") {
+            tags.splice(i, 1);
+        }
+    }
+    document.getElementsByName("tags")[0].value = tags.join(", ");
 }
