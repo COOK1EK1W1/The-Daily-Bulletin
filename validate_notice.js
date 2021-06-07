@@ -1,6 +1,7 @@
 //validate_notice.js this file is used in add_notice.php to validate the notice before adding to the main database
 
 function validate_notice() {
+    //return true;//uncomment for testing purposes to skip validation
 
     let start = new Date(document.getElementsByName("start_date")[0].value); //get start date
     let finish = document.getElementsByName("end_date")[0].value;
