@@ -62,21 +62,21 @@
                     <th id='dates'>Display Dates</td>";//add the titles of the columns
             
                 if ($_SESSION['loggedIn']){//add the extra column headers if loggedin
-                    echo "<th id='action' style='width:60px;'>Action</th>";
+                    echo "<th id='arch-action'>Action</th>";
                 }
                 echo "</tr>";
                 foreach ($archived_notices as $row){//for each notice
                     echo "<tr>";
                     echo '<td id="title">'.htmlify($row['Title']);//add all the information for the notices
-                    echo "<div style='display: none;'>".implode(",",$row['tags'])."</div></td>";
+                    echo "<div class='hide'>".implode(",",$row['tags'])."</div></td>";
                     echo '<td id="description">'.htmlify($row['Description'])."</td>";
                     echo '<td id="teacher">'.htmlify($row['Teacher'])."</td>";
                     echo "<td id='dates'>";
                     echo format_shown_dates($row["InitialDate"], $row["EndDate"], $row["Repeata"])."</td>";
                     if ($_SESSION['loggedIn']){
-                        echo '<td id="action" style="width:60px;">                        
+                        echo '<td id="arch-action">                        
                             <form method="POST" action="/archive.php" class="action_form" onsubmit="return confirm(\'Are you sure you want to remove this notice\')">
-                                <input name="notice" value='.$row["NoticeID"].' style="display:None;">
+                                <input name="notice" value='.$row["NoticeID"].' class="hide">
                                 <input type="submit" name="page_action" value="Remove" class="action_button">
                             </form>
                         </td>';
@@ -88,9 +88,9 @@
                 echo "</table>"; //close the table
                 
                 $tags = get_tags($archived_notices);//get the tags for all displayed notices
-                echo "<ul>";
+                echo "<ul class='tag_list'>";
                 foreach ($tags as $tag){ //create list of all tags
-                    echo "<li><label style='width:100%'><input class='tag_input' name='".$tag."'  type='checkbox' onchange='update()' />".$tag."</label></li>";
+                    echo "<li><label><input class='tag_input' name='".$tag."'  type='checkbox' onchange='update()' />".$tag."</label></li>";
                 }
                 echo "</ul>";
                 
@@ -98,7 +98,7 @@
                 echo "<h2>No notices here</h2>";
             }
 		?>
-        <h2 style='clear:both;'>Notice not here?<br>I guess it was just a figment of your imagination. <br>Head back <a href='/'>here</a></h2>
+        <h2>Notice not here?<br>I guess it was just a figment of your imagination. <br>Head back <a href='/'>here</a></h2>
         <script src="tag_update.js"></script>
 	</body>
 	<script>//script to remove page history

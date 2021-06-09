@@ -22,13 +22,6 @@ body, label, input, textarea, p, td, th, h2, li, th, td, .extras_button{/*font o
     font-size:40px; 
 }
 
-ul{
-    list-style-type: none;
-	padding-left:2px;
-    width:12%; 
-	float:right;
-}
-
 [type="checkbox"], label{
 	cursor: pointer;
 }
@@ -41,11 +34,23 @@ label {
 }
 
 #information{
-	width:49%;
+    border-right-style:solid;
+    border-width:1px;
+    border-right-color: darkgrey;
+	width:calc(50% - 1px);
 	float:left;
 }
+
+.tag_list{
+    text-align:left;
+    list-style-type: none;
+	padding-left:2px;
+    width:12%; 
+	float:right;
+}
+
 #displayDates{
-	width:49%;
+	width:50%;
 	float:right;
 }
 #viewer{
@@ -59,7 +64,7 @@ label {
 }
 
 #tags{
-	width:49%;
+	width:50%;
 	float:right;
 }
 
@@ -84,21 +89,31 @@ td{
 #title{width:180px}
 #description{}
 #teacher{width:145px;}
-#action{width:130px;}
-#dates{width:120px;font-size:16px}
+#action{width:123px;}
+#arch-action{width:60px;}
+#dates{width:120px}
+td#dates{font-size:16px;}
 
+#tag_text{
+    width:74%
+}
+
+.hide{
+    display:none;
+}
 
 #buttons{
     width: 200px;
     height:60px;
     display:block;
     min-width: 100px;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left:calc(50% - 100px);
 }
 
 .action_button{
-	width:60px;
+	width:59px;
+
+    padding:0px;
 }
 
 .login_form{
@@ -114,13 +129,18 @@ td{
 	
 .action_form{
 	margin-bottom:0px; 
-	width:60px; 
 	display:inline;
 }
 
 
 .notices{
 	float:left;width:87%
+}
+
+#date_text{
+    padding-left:13%;
+    width:74%;
+    margin-right:0;
 }
 
 @media only screen and (max-width: 900px) {
@@ -171,6 +191,7 @@ a:hover, a:active{
 }
 
 h2{
+    clear:both;
 	text-align:center;
 	margin-bottom:2px;
 	margin-top:2px;
@@ -182,7 +203,9 @@ textarea{
 }
 
 hr{
+    margin-bottom:0;
 	border:none;
+    clear:both;
 	height:1px;
 	background-color:darkgray;
 }

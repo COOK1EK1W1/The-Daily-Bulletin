@@ -95,6 +95,7 @@
              
             require("html/version.html"); //add bulletin verion
             require("html/heading.php"); //add the heading
+            echo "<br>";
             $needArchive = False; //create needArchive for archiving old notices
             
             if ($_SESSION['loggedIn']){
@@ -126,7 +127,7 @@
                 foreach($notices as $row){//for each notice
                     echo "<tr>";
                     echo '<td id="title">'.htmlify($row['Title']); //add all the information for the notices
-                    echo "<div style='display: none;'>".implode(",",$row['tags'])."</div></td>";
+                    echo "<div class='hide'>".implode(",",$row['tags'])."</div></td>";
                     echo '<td id="description">'.htmlify($row['Description'])."</td>";
                     echo '<td id="teacher">'.htmlify($row['Teacher'])."</td>";
 
@@ -138,22 +139,22 @@
                         // if loggedin add the notice actions
                         echo '<td id="action">
                                 <form method="POST" action="add.php" class="action_form">
-                                    <input name="notice" value='.$row['NoticeID'].' style="display:None;">
+                                    <input name="notice" value='.$row['NoticeID'].' class="hide">
                                     <input type="submit" name="page_action" value="Edit" class="action_button">
                                 </form>
                                 
                                 <form method="POST" action="/" class="action_form" onsubmit="return confirm(\'Are you sure you want to remove this notice\')">
-                                    <input name="notice" value='.$row["NoticeID"].' style="display:None;">
+                                    <input name="notice" value='.$row["NoticeID"].' class="hide">
                                     <input type="submit" name="page_action" value="Remove" class="action_button">
                                 </form>
 
                                 <form method="POST" action="/" class="action_form">
-                                    <input name="notice" value='.$row['NoticeID'].' style="display:None;">
+                                    <input name="notice" value='.$row['NoticeID'].' class="hide">
                                     <input type="submit" name="page_action" value="ODH" class="action_button">
                                 </form>
 
                                 <form method="POST" action="/" class="action_form">
-                                    <input name="notice" value='.$row['NoticeID'].' style="display:None;">
+                                    <input name="notice" value='.$row['NoticeID'].' class="hide">
                                     <input type="submit" name="page_action" value="Archive" class="action_button">
                                 </form>
                              </td>';
@@ -165,9 +166,9 @@
                 echo "</table>"; //close the table
                 
                 $tags = get_tags($notices);//get the tags for all displayed notices
-                echo "<ul>";
+                echo "<ul class='tag_list'>";
                 foreach($tags as $tag){ //create list of all tags
-                    echo "<li><label style='width:100%'><input class='tag_input' name='".$tag."'  type='checkbox' onchange='update()' />".$tag."</label></li>";
+                    echo "<li><label><input class='tag_input' name='".$tag."'  type='checkbox' onchange='update()' />".$tag."</label></li>";
                 }
                 unset($tag);
                 echo "</ul>";
@@ -175,10 +176,12 @@
             }else{ //no notices
                 echo "<h2>No notices today</h2>";
             }
-            echo "<h2 style='clear:both;'>Can't find what your looking for?<br>Try looking in the <a href='/archive.php'>Archive</a></h2>";
+            echo "<h2>Can't find what your looking for?<br>Try looking in the <a href='/archive.php'>Archive</a></h2>";
             
             if ($needArchive){
-                echo '<form method="POST" action="/" class="action_form" style="display:none" id="archive_old"><input name="page_action" value="Archive_old" class="action_button"></form>';
+                echo '<form method="POST" action="/" class="action_form" class="hide" id="archive_old">
+                        <input name="page_action" value="Archive_old" class="action_button">
+                    </form>';
                 echo '<script src="archive_old.js"></script>';
             }
         ?>

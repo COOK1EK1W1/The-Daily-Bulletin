@@ -19,10 +19,10 @@ function on_text_update() {
     var tag_list = "";
     if (tags[0] == "") {
 
-        tag_list = "<li><label style='width:100%'><input class='tag_input' name='No Tags'  type='checkbox'/>No Tags</label></li>"
+        tag_list = "<li><label><input class='tag_input' name='No Tags'  type='checkbox'/>No Tags</label></li>"
     } else {
         for (var i = 0; i < tags.length; i++) {
-            tag_list += "<li><label style='width:100%'><input class='tag_input' name='" + tags[i] + "' type='checkbox'/>" + tags[i] + "</label></li>";
+            tag_list += "<li><label><input class='tag_input' name='" + tags[i] + "' type='checkbox'/>" + tags[i] + "</label></li>";
         }
     }
     document.getElementsByTagName("ul")[1].innerHTML = tag_list;

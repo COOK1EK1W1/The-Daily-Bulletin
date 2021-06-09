@@ -36,24 +36,23 @@
             <div id='information'>
                 <h2>Information</h2>
                 <label for="Title">Enter Notice Title:</label> <br>
-                <input name="Title" value='<?php echo $notice['Title']?>' required maxlength="30"/> <br><br>
+                <input name="Title" value='<?=$notice['Title']?>' required maxlength="30"/> <br><br>
 
                 <label for='Description'>Enter Description:</label><br>
-                <textarea name='Description' required rows="4" cols="50" maxlength="20000"><?php echo $notice['Description']?></textarea><br><br>
+                <textarea name='Description' required rows="4" cols="50" maxlength="20000"><?=$notice['Description']?></textarea><br><br>
 
                 <label for="Teacher">Enter Teacher:</label><br>
-                <input name="Teacher" value="<?php echo $notice['Teacher']?>" required maxlength="26" onchange="on_text_update()" /><br><br>
+                <input name="Teacher" value="<?=$notice['Teacher']?>" required maxlength="26" onchange="on_text_update()" /><br><br>
             </div>
-            <hr width="1" size="300" style="float:left;height:300px;padding:auto;">
             <div id='displayDates'>
                 <h2>Display Dates</h2>
 
                 <label for="start_date">Select start date:</label>
-                <input type="date" name="start_date" value="<?php echo $notice['InitialDate']?>" id="start_date" required onchange="on_date_update();" />
+                <input type="date" name="start_date" value="<?=$notice['InitialDate']?>" id="start_date" required onchange="on_date_update();" />
                 <br>
                 <container id="enddatecontainer">
                     <label for="end_date">Select end date:</label>
-                    <input type="date" name="end_date" value="<?php echo $notice['EndDate']?>" id="end_date" required onchange="on_date_update();" />
+                    <input type="date" name="end_date" value="<?=$notice['EndDate']?>" id="end_date" required onchange="on_date_update();" />
                 </container><br>
 
 
@@ -73,8 +72,8 @@
             <div id='tags'>
                 <br>
                 <h2>Tags</h2>
-                <textarea name="tags" style="width:70%" placeholder="Tag1, Tag2, Tag3"><?php echo implode(", ", $notice['tags'])?></textarea>
-                <ul style="text-align:left; width:20%">
+                <textarea name="tags" placeholder="Tag1, Tag2, Tag3" id="tag_text"><?=implode(", ", $notice['tags'])?></textarea>
+                <ul class='tag_list'>
                     <?php
                         $notices = get_current();
                         $tags = get_tags($notices);
@@ -87,12 +86,12 @@
             </div>
             <?php
                 if (isset($_POST['notice'])){
-                    echo "<input name='Remove' value=".$_POST['notice']." style='display:none;'>";
+                    echo "<input name='Remove' value=".$_POST['notice']." class='hide'>";
                 }
             ?>
             <br>
+            <hr>
             <div id='viewer'>
-                <hr>
                 <h2>Viewer</h2>
                 <table border=2>
                     <tr>
@@ -106,13 +105,15 @@
                         <td id='teacher'></th>
                     </tr>
                 </table>
-                <ul  style="text-align:left;">
-                </ul>
 
-                <br><label id='date_text'></label>
+                <ul class='tag_list'>
+                </ul>
+                <p id='date_text'></p>
+                
+
             </div>
-            <br><br>
-            <input type="submit" name="page_action" value="Add" id="buttons" />
+            <br>
+            <input type="submit" name="page_action" value="Add" id="buttons"/>
         </form>
     </body>
     <script>
