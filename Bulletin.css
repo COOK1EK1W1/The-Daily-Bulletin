@@ -95,7 +95,8 @@ td{
 td#dates{font-size:16px;}
 
 #tag_text{
-    width:74%
+    width:90%;
+    height:44px;
 }
 
 .hide{
@@ -153,6 +154,19 @@ td#dates{font-size:16px;}
     h1 {
       padding-top:20px;
     }
+
+    #information, #tags, #displayDates{
+        width:100%;
+    }
+    #displayDates, #tags{
+        border-top-style:solid;
+        border-width:1px;
+        border-top-color: darkgrey;
+    }
+    #information{
+        border-width:0px;
+    }
+
     
     table{
         width:96%; 
@@ -184,6 +198,10 @@ a:hover, a:active{
     width:40%
 }
 
+.tag_input_list{
+    list-style-type: none;
+    width:90%;
+}
 
 #help-heading{
     text-align: center;

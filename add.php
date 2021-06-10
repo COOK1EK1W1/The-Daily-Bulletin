@@ -66,14 +66,15 @@
                 
                 <option value="weekly" <?php if ($notice['Repeata'] == "weekly") echo "selected"?>>Weekly</option>
 
-                </select><br>
+                </select><br><br>
             </div>
+
             
             <div id='tags'>
-                <br>
+
                 <h2>Tags</h2>
                 <textarea name="tags" placeholder="Tag1, Tag2, Tag3" id="tag_text"><?=implode(", ", $notice['tags'])?></textarea>
-                <ul class='tag_list'>
+                <ul class='tag_input_list'>
                     <?php
                         $notices = get_current();
                         $tags = get_tags($notices);
