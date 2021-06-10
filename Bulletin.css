@@ -1,16 +1,71 @@
+@font-face {
+    font-family: heading_font;
+    src: url(font.ttf);
+}
+
 body, label, input, textarea, p, td, th, h2, li, th, td, .extras_button{/*font of everything*/
     font-family: Calibri, -apple-system;
 }
 
-@font-face {
-  font-family: heading_font;
-  src: url(font.ttf);
+body{
+    text-align:center;
+}
+
+table{
+	border-collapse:collapse; 
+	width:74%; 
+	margin-left:13%; 
+    margin-top:10px;
+    float:left;
+}
+
+h2{
+    clear:both;
+	margin-bottom:2px;
+	margin-top:2px;
+}
+
+textarea{
+	height:139px;
+	width:90%;
+}
+
+hr{
+    margin-bottom:0;
+	border:none;
+    clear:both;
+	height:1px;
+	background-color:darkgray;
+}
+
+label {
+    display: inline-block;
+	padding-top:3px;
+    vertical-align: top;
+}
+
+th{
+	font-weight:bold; 
+    font-size:20px;
+}
+	
+td{
+    word-wrap: break-word;
+    font-size:20px;
+}
+
+a:link, a:visited{
+    text-decoration: none;
+    color:blue;
+}
+
+a:hover, a:active{
+    text-decoration: underline;
 }
 
 .Title, .Date{
 	font-family: 'heading_font';
     width:100%; 
-    text-align:center;
     margin-top: 10px;
 }
 
@@ -26,21 +81,6 @@ body, label, input, textarea, p, td, th, h2, li, th, td, .extras_button{/*font o
 	cursor: pointer;
 }
 
-
-label {
-    display: inline-block;
-	padding-top:3px;
-    vertical-align: top;
-}
-
-#information{
-    border-right-style:solid;
-    border-width:1px;
-    border-right-color: darkgrey;
-	width:calc(50% - 1px);
-	float:left;
-}
-
 .tag_list{
     text-align:left;
     list-style-type: none;
@@ -49,58 +89,41 @@ label {
 	float:right;
 }
 
-#displayDates{
-	width:50%;
-	float:right;
-}
-#viewer{
-	clear:both;
-}
-
 .tag_input{
 	width:20px;
 	height:20px;
     vertical-align: middle;
 }
 
-#tags{
-	width:50%;
-	float:right;
-}
-
-table{
-	border-collapse:collapse; 
-	width:74%; 
-	margin-left:13%; 
-    margin-top:10px;
-    float:left;
-}
-
-th{
-	font-weight:bold; 
-    font-size:20px;
-}
-	
-td{
-    word-wrap: break-word;
-    font-size:20px;
-}
-
-#title{width:180px}
-#description{}
-#teacher{width:145px;}
-#action{width:123px;}
-#arch-action{width:60px;}
-#dates{width:120px}
-td#dates{font-size:16px;}
-
-#tag_text{
-    width:90%;
-    height:44px;
-}
-
 .hide{
     display:none;
+}
+
+.tag_input_list{
+    list-style-type: none;
+    width:90%;
+}
+
+.action_button{
+	width:59px;
+
+    padding:0px;
+}
+
+.login_form{
+    float:left;
+    position:apsolute;
+    height:0px;
+    margin:0px;
+}
+
+.action_form{
+	margin-bottom:0px; 
+	display:inline;
+}
+
+.notices{
+	float:left;width:87%
 }
 
 #buttons{
@@ -111,31 +134,27 @@ td#dates{font-size:16px;}
     margin-left:calc(50% - 100px);
 }
 
-.action_button{
-	width:59px;
-
-    padding:0px;
+#displayDates{
+	width:50%;
+	float:right;
 }
 
-.login_form{
-    position:apsolute;
-    height:0px;
-    margin:0px;
+#information{
+    border-right-style:solid;
+    border-width:1px;
+    border-right-color: darkgrey;
+	width:calc(50% - 1px);
+	float:left;
 }
 
-
-#add_form{
-    text-align: center;
-}
-	
-.action_form{
-	margin-bottom:0px; 
-	display:inline;
+#tags{
+	width:50%;
+	float:right;
 }
 
-
-.notices{
-	float:left;width:87%
+#tag_text{
+    width:90%;
+    height:44px;
 }
 
 #date_text{
@@ -144,10 +163,27 @@ td#dates{font-size:16px;}
     margin-right:0;
 }
 
-@media only screen and (max-width: 900px) {
+#help{
+    width:40%
+}
+
+#help-heading{
+    text-align: center;
+    clear:both;
+}
+
+#title{width:180px}
+#description{}
+#teacher{width:145px;}
+#action{width:123px;}
+#arch-action{width:60px;}
+#dates{width:120px}
+td#dates{font-size:16px;}
+
+@media only screen and (max-aspect-ratio: 1/1) {
 	#title{width:140}
 	#description{}
-	#teacher{width:100;}
+	#teacher{width:100px;}
 	#action{width:65px;}
 	#dates{display:none}
 	
@@ -183,49 +219,6 @@ td#dates{font-size:16px;}
     #Date_Year {
       display:None;
     }
-}
-
-a:link, a:visited{
-    text-decoration: none;
-    color:blue;
-}
-
-a:hover, a:active{
-    text-decoration: underline;
-}
-
-#help{
-    width:40%
-}
-
-.tag_input_list{
-    list-style-type: none;
-    width:90%;
-}
-
-#help-heading{
-    text-align: center;
-    clear:both;
-}
-
-h2{
-    clear:both;
-	text-align:center;
-	margin-bottom:2px;
-	margin-top:2px;
-}
-
-textarea{
-	height:139px;
-	width:90%;
-}
-
-hr{
-    margin-bottom:0;
-	border:none;
-    clear:both;
-	height:1px;
-	background-color:darkgray;
 }
 
 body{

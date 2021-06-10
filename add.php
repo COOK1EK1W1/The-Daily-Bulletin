@@ -29,20 +29,22 @@
         <script src="validate_notice.js"></script>
     </head>
     <body>
+        <?php require("html/version.html")?>
         <?php require("html/heading.php")?>
+        
 
-        <form method="POST" action="/" onsubmit="return validate_notice()" id="add_form">
+        <form method="POST" action="/" onsubmit="return validate_notice()">
 
             <div id='information'>
                 <h2>Information</h2>
-                <label for="Title">Enter Notice Title:</label> <br>
-                <input name="Title" value='<?=$notice['Title']?>' required maxlength="30"/> <br><br>
+                <label for="Title" style="padding-right:10%">Enter Notice Title: <br>
+                <input name="Title" value='<?=$notice['Title']?>' required maxlength="30"/></label>
+
+                <label for="Teacher" >Enter Teacher:<br>
+                <input name="Teacher" value="<?=$notice['Teacher']?>" required maxlength="26" onchange="on_text_update()" /></label><br><br>
 
                 <label for='Description'>Enter Description:</label><br>
                 <textarea name='Description' required rows="4" cols="50" maxlength="20000"><?=$notice['Description']?></textarea><br><br>
-
-                <label for="Teacher">Enter Teacher:</label><br>
-                <input name="Teacher" value="<?=$notice['Teacher']?>" required maxlength="26" onchange="on_text_update()" /><br><br>
             </div>
             <div id='displayDates'>
                 <h2>Display Dates</h2>
@@ -92,7 +94,7 @@
             ?>
             <br>
             <hr>
-            <div id='viewer'>
+            <div>
                 <h2>Viewer</h2>
                 <table border=2>
                     <tr>
