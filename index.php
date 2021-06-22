@@ -10,7 +10,7 @@
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		if (isset($_POST['Remove'])){
-			remove_notice($_POST['Remove']); //call remove_notice() from connection.php
+			remove_notice("notices.json", $_POST['Remove']); //call remove_notice() from connection.php
 		}
 
         switch( $_POST['page_action']){//page action handling
@@ -57,11 +57,11 @@
 
             case "Archive": //add notice to archive then delete from current
                 archive_notice($_POST['notice']); //both function from connection.php
-                remove_notice($_POST['notice']);
+                remove_notice("notices.json", $_POST['notice']);
 
 
             case "Remove":
-                remove_notice($_POST['notice']);
+                remove_notice("notices.json", $_POST['notice']);
                 break;
 
 
@@ -181,8 +181,8 @@
             if ($needArchive){
                 echo '<form method="POST" action="/" class="action_form" class="hide" id="archive_old">
                         <input name="page_action" value="Archive_old" class="action_button">
-                    </form>';
-                echo '<script src="archive_old.js"></script>';
+                    </form>
+                <script src="archive_old.js"></script>';
             }
         ?>
         <script src="tag_update.js"></script>

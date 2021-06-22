@@ -23,7 +23,7 @@
                 break;
 
 		    case "Remove":
-                remove_notice_archive($_POST['notice']);
+                remove_notice("archive.json", $_POST['notice']);
                 break;
         }
 	}
@@ -52,7 +52,7 @@
 		?>
         <h2>Archive</h2>
 		<?php
-            $archived_notices = get_archived(); //call get_archived() from connection.php for notices
+            $archived_notices = get_notices("archive.json"); //call get_archived() from connection.php for notices
             
             if (count($archived_notices) > 0){ //if there are notices
                 echo "<table border=2><tr>";// open the table

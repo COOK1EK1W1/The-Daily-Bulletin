@@ -78,7 +78,7 @@
                 <textarea name="tags" placeholder="Tag1, Tag2, Tag3" id="tag_text"><?=implode(", ", $notice['tags'])?></textarea>
                 <ul class='tag_input_list'>
                     <?php
-                        $notices = get_current();
+                        $notices = get_notices("notices.json");
                         $tags = get_tags($notices);
                         foreach($tags as $tag){
                             echo "<input type='button' value='".$tag."' onclick='add_to_tags(\"".$tag."\")'>";

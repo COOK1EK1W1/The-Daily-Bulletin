@@ -1,31 +1,22 @@
 <?php
-function read_current(){
-	$string = file_get_contents("notices.json");
+function read_file($file){
+	$string = file_get_contents($file);
 	$json_a = json_decode($string, true);
 	return $json_a;
 }
 
-function write_current($notices){
+function write_file($file, $notices){
     $json = json_encode($notices);
-    file_put_contents("notices.json", $json);
+    file_put_contents($file, $json);
 }
 
-
-function read_archive(){
-	$string = file_get_contents("archive.json");
-	$json_a = json_decode($string, true);
-	return $json_a;
+function get_notices($file){
+	return read_file($file)['Notices'];
 }
-
-function write_archive($notices){
-    $json = json_encode($notices);
-    file_put_contents("archive.json", $json);
-}
-
 
 function get_today_notices(){
 	$notices = array();
-	$all_notices = get_current();
+	$all_notices = get_notices("notices.json");
     foreach($all_notices as $notice){
         if(display_type($notice) == 0){
 			array_push($notices, $notice);
@@ -35,8 +26,9 @@ function get_today_notices(){
 	return $notices;
 }
 
+
 function get_all_notices(){
-	$all_notices = get_current();
+	$all_notices = get_notices("notices.json");
     foreach($all_notices as &$notice){
 		$notice['Display'] = display_type($notice);
 	}
@@ -55,29 +47,22 @@ function get_all_notices(){
 	return $all_notices;
 }
 
-function get_current(){
-	return read_current()['Notices'];
-}
-
-function get_archived(){
-	return read_archive()['Notices'];
-}
-
 
 function archive_notice($noticeID){
-    $archived_notices = read_archive();
-    $current_notices = get_current();
+    $archived_notices = read_file("archive.json");
+    $current_notices = get_notices("notices.json");
     foreach($current_notices as $notice){
         if ($notice['NoticeID'] == $noticeID){
             array_push($archived_notices['Notices'], $notice);
         }
     }
     unset($notice);
-    write_archive($archived_notices);
+    write_file("archive.json", $archived_notices);
 }
 
+
 function get_notice($noticeID){
-    $current_notices = get_current();
+    $current_notices = get_notices("notices.json");
     foreach($current_notices as $notice){
         if ($notice['NoticeID'] == $noticeID){
             return $notice;
@@ -87,28 +72,19 @@ function get_notice($noticeID){
 }
 
 
-function remove_notice($noticeID){
-    $notices = read_current();
+function remove_notice($file, $noticeID){
+    $notices = read_file($file);
     for ($i = 0; $i < count($notices['Notices']);$i++){
         if ($notices['Notices'][$i]['NoticeID'] == $noticeID){
             array_splice($notices['Notices'], $i, 1);
         }
     }
-    write_current($notices);
+    write_file($file, $notices);
 }
 
-function remove_notice_archive($noticeID){
-    $notices = read_archive();
-    for ($i = 0; $i < count($notices['Notices']);$i++){
-        if ($notices['Notices'][$i]['NoticeID'] == $noticeID){
-            array_splice($notices['Notices'], $i, 1);
-        }
-    }
-    write_archive($notices);
-}
 
 function hold($noticeID){
-    $notices = read_current();
+    $notices = read_file("notices.json");
     foreach($notices['Notices'] as &$notice){
         if ($notice['NoticeID'] == $noticeID){
             if ($notice['Hold'] != ""){
@@ -118,7 +94,7 @@ function hold($noticeID){
             }
         }
     }
-    write_current($notices);
+    write_file("notices.json", $notices);
 }
 
 
@@ -127,14 +103,14 @@ function archive_old(){
     for ($i = 0; $i < count($notices['Notices']);$i++){
         if (new Datetime($notices['Notices'][$i]['EndDate']) < new Datetime()){
             archive_notice($notices['Notices'][$i]['NoticeID']);
-            remove_notice($notices['Notices'][$i]['NoticeID']);
+            remove_notice("notices.json", $notices['Notices'][$i]['NoticeID']);
         }
     }
 }
 
 
 function add_notice($title, $description, $teacher, $initialDate, $endDate, $repeata, $tags ){
-    $notices = read_current();
+    $notices = read_file("notices.json");
     for ($i = 0; $i < count($notices['Notices']);$i++){
         if ($notices["Notices"][$i]['Title'] == $title and $notices["Notices"][$i]['Description'] == $description){
             return;
@@ -145,9 +121,8 @@ function add_notice($title, $description, $teacher, $initialDate, $endDate, $rep
     "EndDate"=> $endDate, "Repeata"=> $repeata, "tags"=>$tags, "Hold"=> false);
     $notices['nextID'] += 1;
     array_push($notices['Notices'], $new_notice);
-    write_current($notices);
+    write_file("notices.json", $notices);
 }
-
 
 
 function display_type($notice){
@@ -155,17 +130,14 @@ function display_type($notice){
     $end = date("Y-m-d", strtotime($notice['EndDate']));
     $now = date("Y-m-d");
 
-	if ($end < $now){
-		return 3;
-	}
-	if ($notice['Hold'] != ""){
-		return 1;
-	}
+	if ($end < $now){return 3;}
+
+	if ($notice['Hold'] != ""){return 1;}
+
 	if ($notice['Repeata'] == "once"){
-		if ($start == $now){
-			return 0;
-		}
+		if ($start == $now){return 0;}
 	}
+
 	if ($start <= $now and $end >= $now){
 		if ($notice['Repeata'] == "daily"){
 			return 0;
@@ -175,6 +147,5 @@ function display_type($notice){
 		}
 	}
 	return 2;
-
 }
 ?>
