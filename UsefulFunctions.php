@@ -1,6 +1,6 @@
 <?php
 function htmlify($string){
-	$string = str_replace("\\n","<br>",$string);
+	$string = str_replace("\n","<br>",$string);
     $parts = explode("*", $string);
     $bold = false;
     $string = "";
