@@ -174,9 +174,9 @@
                 echo "</ul>";
                 
             }else{ //no notices
-                echo "<h2>No notices today</h2>";
+                echo "<h2>No notices today</h2><br><br><br>";
             }
-            echo "<h2>Can't find what your looking for?<br>Try looking in the <a href='/archive.php'>Archive</a></h2>";
+            echo "<h2>Can't find what you're looking for?<br>Try looking in the <a href='/archive.php'>Archive</a></h2>";
             
             if ($needArchive){
                 echo '<form method="POST" action="/" class="action_form" class="hide" id="archive_old">

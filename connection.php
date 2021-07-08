@@ -99,7 +99,7 @@ function hold($noticeID){
 
 
 function archive_old(){
-    $notices = read_current();
+    $notices = read_file("notices.json");
     for ($i = 0; $i < count($notices['Notices']);$i++){
         if (new Datetime($notices['Notices'][$i]['EndDate']) < new Datetime()){
             archive_notice($notices['Notices'][$i]['NoticeID']);

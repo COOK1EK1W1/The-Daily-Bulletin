@@ -98,7 +98,7 @@
                 echo "<h2>No notices here</h2>";
             }
 		?>
-        <h2>Notice not here?<br>I guess it was just a figment of your imagination. <br>Head back <a href='/'>here</a></h2>
+        <h2><br>Head back <a href='/'>here</a></h2>
         <script src="tag_update.js"></script>
 	</body>
 	<script>//script to remove page history
