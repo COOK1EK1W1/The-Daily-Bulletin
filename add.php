@@ -7,16 +7,21 @@
     require("connection.php");
     require("UsefulFunctions.php");
 
-    $notice = NULL; //set notice to POST notice for editing
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if(isset($_POST['notice'])){
-            $notice = get_notice($_POST['notice']);
-        }
+    $editingNotice = NULL; //set notice to POST notice for editing
+
+    if(isset($_POST['notice'])){
+        $editingNotice = get_notice($_POST['notice']);
     }
-    if ($notice == NULL){//get default notice if no post
-        $notice = array("NoticeID"=>"1", "Title"=> "", 
-        "Description"=> "", "Teacher"=> "","InitialDate"=> date("Y-m-d"),
-        "EndDate"=> date("Y-m-d"), "Repeata"=> "once", "tags"=>[]);
+
+    if ($editingNotice == NULL){//get default notice if no post
+        $editingNotice = array(
+            "Title"=> "", 
+            "Description"=> "", 
+            "Teacher"=> "",
+            "InitialDate"=> date("Y-m-d"), 
+            "EndDate"=> date("Y-m-d"), 
+            "Repeata"=> "once", 
+            "Tags"=>["No Tags"]);
     }
 
 ?>
@@ -24,62 +29,66 @@
     <head>
         <title>DHS Daily Bulletin</title>
         <link rel="stylesheet" href="Bulletin.css">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
         <meta charset="UTF-8">
-        <script src="update.js"></script>
-        <script src="validate_notice.js"></script>
+        <script src="scripts/update.js"></script>
+        <script src="scripts/validate_notice.js"></script>
     </head>
     <body>
-        <?php require("html/version.html")?>
-        <?php require("html/heading.php")?>
+        <?php require("html-lib/version.html")?>
+        <?php require("html-lib/heading.php")?>
         
 
         <form method="POST" action="/" onsubmit="return validate_notice()">
 
             <div id='information'>
                 <h2>Information</h2>
-                <label for="Title" style="padding-right:10%">Enter Notice Title: <br>
-                <input name="Title" value='<?=$notice['Title']?>' required maxlength="30"/></label>
+                <label style="padding-right:10%">Notice Title: <br>
+                    <input name="Title" value='<?=$editingNotice['Title']?>' required maxlength="30"/>
+                </label>
 
-                <label for="Teacher" >Enter Teacher:<br>
-                <input name="Teacher" value="<?=$notice['Teacher']?>" required maxlength="26" onchange="on_text_update()" /></label><br><br>
+                <label>Teacher:<br>
+                    <input name="Teacher" value="<?=$editingNotice['Teacher']?>" required maxlength="30"/>
+                </label><br><br>
 
-                <label for='Description'>Enter Description:</label><br>
-                <textarea name='Description' required rows="4" cols="50" maxlength="20000"><?=$notice['Description']?></textarea><br><br>
+                <label style="width:100%;">Description:<br>
+                    <textarea name='Description' required maxlength="20000" rows="8"><?=$editingNotice['Description']?></textarea>
+                </label><br><br>
             </div>
+
             <div id='displayDates'>
                 <h2>Display Dates</h2>
+                <div id="startDateContainer"> 
+                    <label>Select start date:
+                        <input type="date" name="start_date" value="<?=$editingNotice['InitialDate']?>" required onchange="on_date_update();"/>
+                    </label>
+                </div><br>
 
-                <label for="start_date">Select start date:</label>
-                <input type="date" name="start_date" value="<?=$notice['InitialDate']?>" id="start_date" required onchange="on_date_update();" />
-                <br>
-                <container id="enddatecontainer">
-                    <label for="end_date">Select end date:</label>
-                    <input type="date" name="end_date" value="<?=$notice['EndDate']?>" id="end_date" required onchange="on_date_update();" />
-                </container><br>
+                <div id="endDateContainer">
+                    <label>Select end date:
+                        <input type="date" name="end_date" value="<?=$editingNotice['EndDate']?>" required onchange="on_date_update();" />
+                    </label>
+                </div><br>
 
 
-                <label for="repeat">Choose how often you want notices to be displayed:</label>
+                <label for="repeat">Choose how often you want notices to be displayed:
 
-                <select name="repeat" id="repeat" required onchange="on_date_update();">
-                
-                <option value="once" <?php if ($notice['Repeata'] == "once") echo "selected"?>>Once</option>
-
-                <option value="daily" <?php if ($notice['Repeata'] == "daily") echo "selected"?>>Daily</option>
-                
-                <option value="weekly" <?php if ($notice['Repeata'] == "weekly") echo "selected"?>>Weekly</option>
-
-                </select><br><br>
+                    <select name="repeat" id="repeat" required onchange="on_date_update();">
+                        <option value="once" <?php if ($editingNotice['Repeata'] == "once") echo "selected"?>>Once</option>
+                        <option value="daily" <?php if ($editingNotice['Repeata'] == "daily") echo "selected"?>>Daily</option>                        
+                        <option value="weekly" <?php if ($editingNotice['Repeata'] == "weekly") echo "selected"?>>Weekly</option>
+                    </select>
+                </label><br><br>
             </div>
 
             
             <div id='tags'>
-
                 <h2>Tags</h2>
-                <textarea name="tags" placeholder="Tag1, Tag2, Tag3" id="tag_text"><?=implode(", ", $notice['tags'])?></textarea>
+                <textarea name="Tags" placeholder="Tag1, Tag2, Tag3" rows="3" cols="20"><?php echo implode(", ", $editingNotice['Tags'])?></textarea>
                 <ul class='tag_input_list'>
                     <?php
-                        $notices = get_notices("notices.json");
-                        $tags = get_tags($notices);
+                        $allTags = read_notices("data/notices.json");
+                        $tags = get_all_tags_from($allTags);
                         foreach($tags as $tag){
                             echo "<input type='button' value='".$tag."' onclick='add_to_tags(\"".$tag."\")'>";
                         }
@@ -116,11 +125,11 @@
 
             </div>
             <br>
-            <input type="submit" name="page_action" value="Add" id="buttons"/>
+            <input type="submit" name="page_action" value="Add" class="big_action_button"/>
         </form>
     </body>
     <script>
         on_date_update();
-        setInterval(on_text_update, 30);
+        setInterval(on_text_update, 60);
     </script>
 </html>

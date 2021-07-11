@@ -7,7 +7,7 @@ function on_text_update() {
     let title = document.getElementsByName("Title")[0].value;
     let description = document.getElementsByName("Description")[0].value;
     let teacher = document.getElementsByName("Teacher")[0].value;
-    let tags = document.getElementsByName("tags")[0].value.split(", ");
+    let tags = document.getElementsByName("Tags")[0].value.split(", ");
 
     if ((title == "" && description == "" && teacher == "")) {
         title = "⠀"
@@ -31,10 +31,10 @@ function on_text_update() {
 
 function on_date_update() {
     let text = document.getElementById("date_text");
-    let x = document.getElementById("start_date").value;
-    let y = document.getElementById("end_date");
+    let x = document.getElementsByName("start_date")[0].value;
+    let y = document.getElementsByName("end_date")[0];
     let z = document.getElementById("repeat").value;
-    let enddate = document.getElementById("enddatecontainer");
+    let enddate = document.getElementById("endDateContainer");
     if (z == "daily" && x != "" && y.value != "") {
         text.innerHTML = "This notice will be displayed <b> every day</b> between and including <b>" + x + "</b> and <b>" + y.value + "</b>";
     }
@@ -58,6 +58,8 @@ function on_date_update() {
 }
 
 function htmlify(string) {//convert raw text to html
+    //it is important to keep this function and the function of the same name in
+    //UsefulFunctions.php to produce the same output.
     string = string.replaceAll("\n", "<br>")//new line fix
 
     parts = string.split("*"); //stars for bold
@@ -92,7 +94,7 @@ function htmlify(string) {//convert raw text to html
 }
 
 function add_to_tags(tag) {
-    tags = document.getElementsByName("tags")[0].value.split(", ");
+    tags = document.getElementsByName("Tags")[0].value.split(", ");
     if (tags.includes(tag)) {//remove tag
         for (var i = 0; i < tags.length; i++) {
             if (tags[i] == tag) {
@@ -107,5 +109,5 @@ function add_to_tags(tag) {
             tags.splice(i, 1);
         }
     }
-    document.getElementsByName("tags")[0].value = tags.join(", ");
+    document.getElementsByName("Tags")[0].value = tags.join(", ");
 }

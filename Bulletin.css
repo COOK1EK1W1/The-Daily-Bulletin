@@ -27,8 +27,7 @@ h2{
 }
 
 textarea{
-	height:139px;
-	width:90%;
+	width:60%;
 }
 
 hr{
@@ -126,7 +125,7 @@ a:hover, a:active{
 	float:left;width:87%
 }
 
-#buttons{
+.big_action_button{
     width: 200px;
     height:60px;
     display:block;
@@ -150,11 +149,6 @@ a:hover, a:active{
 #tags{
 	width:50%;
 	float:right;
-}
-
-#tag_text{
-    width:90%;
-    height:44px;
 }
 
 #date_text{
@@ -181,7 +175,7 @@ a:hover, a:active{
 td#dates{font-size:16px;}
 
 @media only screen and (max-aspect-ratio: 1/1) {
-	#title{width:140}
+	.title{width:140}
 	#description{}
 	#teacher{width:100px;}
 	#action{width:65px;}

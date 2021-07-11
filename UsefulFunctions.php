@@ -28,7 +28,6 @@ function htmlify($string){
     $replacedText = preg_replace($replacePattern3, '<a href="mailto:$1">$1</a>', $replacedText);
 
 	return $replacedText;
-
 }
 
 function format_shown_dates($start, $end, $repeata){
@@ -38,22 +37,36 @@ function format_shown_dates($start, $end, $repeata){
 		$day = "Day";
 	}
 	
-	if ($repeata != "once"){
-		return "From " .$start ."<br>To ".$end."<br> Every ".$day;
+	if ($repeata == "once"){
+        return "On ".$start ."<br>Once";
 	}else{
-		return "On ".$start ."<br>Once";
+		return "From " .$start ."<br>To ".$end."<br> Every ".$day;
 	}
 }
 
-function get_tags($notices){
+function get_all_tags_from($notices){
 	$tags = array();
-	for ($i = 0; $i < count($notices);$i++){
-		for ($e = 0;$e < count($notices[$i]['tags']);$e++){
-			if (!in_array($notices[$i]['tags'][$e], $tags)){
-				array_push($tags, $notices[$i]['tags'][$e]);
-			}
-		}
-	}
+    foreach ($notices as $notice){
+        foreach($notice['Tags'] as $tag){
+            if (!in_array($tag, $tags)){
+                array_push($tags, $tag);
+            }
+        }
+        unset($tag);
+    }
+    unset($notice);
 	return $tags;
+}
+
+function validate_password($inputPassword){
+    $password = fopen("data/password.txt", "r"); //open password file
+    $truePassword = fread($password,filesize("data/password.txt"));
+    fclose($password);
+
+    if(hash("sha256", $inputPassword) == $truePassword){ //compare password
+        return true;
+    }else{
+        return false;
+    }
 }
 ?>
