@@ -30,7 +30,7 @@
 	<head>
 		<title>DHS Daily Bulletin</title>
 		<link rel="stylesheet" href="Bulletin.css">
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="favicon.png" type="image/png"/>
 		<meta charset="UTF-8">
 	</head>
 	<body>

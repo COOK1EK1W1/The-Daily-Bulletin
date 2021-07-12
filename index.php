@@ -65,7 +65,7 @@
 <html lang="en">
 	<head>
 		<title>DHS Daily Bulletin</title>
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="favicon.png" type="image/png"/>
 		<link rel="stylesheet" href="Bulletin.css">
 		<meta charset="UTF-8">
 	</head>
