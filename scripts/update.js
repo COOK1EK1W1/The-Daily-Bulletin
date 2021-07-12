@@ -60,6 +60,10 @@ function on_date_update() {
 function htmlify(string) {//convert raw text to html
     //it is important to keep this function and the function of the same name in
     //UsefulFunctions.php to produce the same output.
+
+    string = string.replaceAll("<", "&lt;"); //remove < and > so you can't put html tags in a notice
+    string = string.replaceAll(">", "&gt;"); //comment out for coolness
+
     string = string.replaceAll("\n", "<br>")//new line fix
 
     parts = string.split("*"); //stars for bold
@@ -76,6 +80,7 @@ function htmlify(string) {//convert raw text to html
         }
         bold = !bold
     }
+
 
     //link formatting - replace www.youtube.com with <a href="www.youtube.com">www.youtube.com</a>
     //To be honest idk how it works

@@ -1,5 +1,8 @@
 <?php
 function htmlify($string){
+    $string = str_replace("<","&lt;",$string);//new line fix
+    $string = str_replace(">","&gt;",$string);//new line fix
+
 	$string = str_replace("\n","<br>",$string);//new line fix
     $parts = explode("*", $string); //bold inbetween stars
     $bold = false;
